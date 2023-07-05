@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="handler.js"></script>
   <title>Hello, world!</title>
+  <script>
+    function handleLinkClick(event) {
+      event.preventDefault(); // Prevent the default link behavior
+      var link = event.target.href;
+
+      // Dismiss the webview (replace this with your own implementation)
+      dismissWebView();
+
+      // Redirect to the desired URL
+      window.location.href = link;
+    }
+
+    function dismissWebView() {
+       window.history.back();
+    }
+  </script>
 </head>
 <body>
   <h1>Hello, world!</h1>
-  <p><a href="sofimobile://wealth/brokerage_tearsheet/AAPL">AAPL tearsheet</a></p>
+  <p><a href="sofimobile://wealth/brokerage_tearsheet/AAPL" onclick="handleLinkClick(event)">AAPL tearsheet</a></p>
   <p><a href="https://www.sofi.com/wealth/app/stock/AAPL">AAPL web tearsheet</a></p>
   <p><a href="https://www.google.com">Google page</a></p>
 </body>
 </html>
+l>

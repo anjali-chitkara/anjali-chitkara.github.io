@@ -11,12 +11,25 @@
       dismissWebView();
 
       // Redirect to the desired URL
-      window.location.href = "sofimobile://wealth/brokerage_tearsheet/AAPL";
+      window.location.href = link;
     }
 
     function dismissWebView() {
-       window.history.back();
+      // Call the dismissWebView method from the React Native WebView
+      if (window.ReactNativeWebView) {
+        window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'dismissWebView' }));
+      }
     }
+
+    // Handle messages received from React Native WebView
+    window.addEventListener('message', function(event) {
+      var messageData = JSON.parse(event.data);
+      var action = messageData.action;
+
+      if (action === 'dismissWebView') {
+        dismissWebView();
+      }
+    });
   </script>
 </head>
 <body>
@@ -24,6 +37,29 @@
   <p><a href="https://www.google.com" onclick="handleLinkClick(event)">AAPL tearsheet</a></p>
   <p><a href="https://www.sofi.com/wealth/app/stock/AAPL">AAPL web tearsheet</a></p>
   <p><a href="https://www.google.com">Google page</a></p>
+
+  <!-- React Native WebView Component -->
+  <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/react-native-web/dist/index.js"></script>
+  <script>
+    function dismissWebView() {
+      // Replace 'webViewRef' with the reference to your WebView component
+      if (window.webViewRef) {
+        webViewRef.current.goBack();
+      }
+    }
+
+    const WebViewComponent = React.createElement(
+      ReactNativeWebView.WebView,
+      { ref: (ref) => (webViewRef = ref), source: { uri: 'sofimobile://wealth/brokerage_tearsheet/AAPL' } },
+      null
+    );
+
+    ReactDOM.render(
+      WebViewComponent,
+      document.body
+    );
+  </script>
 </body>
 </html>
-l>
